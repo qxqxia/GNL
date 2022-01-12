@@ -12,21 +12,59 @@
 
 #include "get_next_line.h"
 
+char	*first_line(char *str)
+{
+	char	*line;
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i] && str[i] != '\n')
+		i++;
+	line = (char *)malloc(sizeof(char) * i + 1);
+	if (!line)
+		return (NULL);
+	while (str[i] && str[i] != '\n')
+	{
+		line[i] = str[i];
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
+}
+
+int	ft_newline(char	*save)
+{
+	int	i;
+	
+	i = 0;
+	if (!save)
+		return (0);
+	while (save[i])
+	{
+		if (save[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*get_next_line(int fd)
 {
-	char	buf[2];
-	int		ret;
+	char	buf[BUFFER_SIZE + 1];
+	int	read_n;
 	char	*line;
+	char	*save;
 
+	read_n = 1;
 	if (fd < 0)
 		return (NULL);
-	line = ft_strdup("");
-	while ((ret = read(fd, buf, 1)) > 0)
+	while ((read_n = read(fd, buf, BUFFER_SIZE)) > 0)
 	{
-		buf[ret] = '\0';
-		if (buf[0] == '\n');
-		return (line);
-		line = ft_strjoin(line, buf);
+		buf[read_n] = '\0';
+		save = ft_strjoin(save, buf);
 	}
+	line = first_line(save);
 	return (line);
 }
