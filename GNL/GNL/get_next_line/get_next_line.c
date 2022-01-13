@@ -12,7 +12,7 @@
 
 #include "get_next_line.h"
 
-char	*first_line(char *str)
+char	*line1(char *str)
 {
 	char	*line;
 	int	i;
@@ -32,6 +32,34 @@ char	*first_line(char *str)
 	}
 	line[i] = '\0';
 	return (line);
+}
+
+char	*new_buf(char *save)
+{
+	char	*s;
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	if (!save)
+		return (0);
+	while (save[i] && save[i] != '\n')
+		i++;
+	if (!save[i])
+	{
+		free(save);
+		return (0);
+	}
+	s = (char*)malloc(sizeof(char) * ft_strlen(save) - i + 1);
+	if (!s)
+		return (NULL);
+	i++;
+	while (save[i])
+		s[j++] = save[i++];
+	free(save);
+	s[j] = '\0';
+	return (s);
 }
 
 int	ft_newline(char	*save)
@@ -65,6 +93,6 @@ char	*get_next_line(int fd)
 		buf[read_n] = '\0';
 		save = ft_strjoin(save, buf);
 	}
-	line = first_line(save);
+	line = line1(save);
 	return (line);
 }
