@@ -25,6 +25,7 @@ static char	*line1(char *str)
 	line = (char *)malloc(sizeof(char) * i + 1);
 	if (!line)
 		return (NULL);
+	i = 0;
 	while (str[i] && str[i] != '\n')
 	{
 		line[i] = str[i];
@@ -83,7 +84,7 @@ char	*get_next_line(int fd)
 	char		buf[BUFFER_SIZE + 1];
 	int			read_n;
 	char		*line;
-	char		*save;
+	static char		*save;
 
 	read_n = 1;
 	if (fd < 0 || BUFFER_SIZE < 1)
@@ -91,14 +92,12 @@ char	*get_next_line(int fd)
 	while (read_n != 0 && !ft_newline(save))
 	{
 		read_n = read(fd, buf, BUFFER_SIZE);
-		if (read_n == -1)
+		if (read_n < 0)
 			return (NULL);
 		buf[read_n] = '\0';
 		save = ft_strjoin(save, buf);
 	}
 	line = line1(save);
 	save = new_buf(save);
-	if (read_n == 0)
-		return (0);
 	return (line);
 }
