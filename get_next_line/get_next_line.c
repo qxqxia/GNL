@@ -3,64 +3,102 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: qxia <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: qxia <qxia@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/27 15:53:16 by qxia              #+#    #+#             */
-/*   Updated: 2021/12/29 18:22:05 by qxia             ###   ########.fr       */
+/*   Updated: 2022/01/17 12:14:36 by qxia             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*line1(const char *str)
+static char	*line1(char *str)
 {
-	size_t		i;
-	char		*s;
+	char	*line;
+	int		i;
 
 	i = 0;
 	if (!str)
 		return (0);
-	while (str[i])
+	while (str[i] && str[i] != '\n')
 		i++;
-	s = (char *)malloc(sizeof(char) * i + 1);
-	if (!s)
+	line = (char *)malloc(sizeof(char) * i + 1);
+	if (!line)
 		return (NULL);
-	while (str[i])
+	while (str[i] && str[i] != '\n')
 	{
-		s[i] = str[i];
+		line[i] = str[i];
 		i++;
 	}
-	s[i] = '\0';
-	return (s);
+	line[i] = '\0';
+	return (line);
 }
 
-char	*rest_lines(const char *lines)
+static char	*new_buf(char *save)
 {
-	size_t	i;
-	size_t	j;
-	char	*str;
+	char	*s;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
-	if (!lines)
+	if (!save)
 		return (0);
-	while (lines[i])
+	while (save[i] && save[i] != '\n')
 		i++;
-	str = (char *)malloc(sizeof(char) * ft_strlen(lines) - i + 1);
-	if (!str)
-		return (NULL);
-	while (lines[i])
+	if (!save[i])
 	{
-		str[i] = line[i]
+		free(save);
+		return (0);
 	}
+	s = (char *)malloc(sizeof(char) * ft_strlen(save) - i + 1);
+	if (!s)
+		return (NULL);
+	i++;
+	while (save[i])
+		s[j++] = save[i++];
+	free(save);
+	s[j] = '\0';
+	return (s);
 }
 
+static int	ft_newline(char	*save)
+{
+	int	i;
+
+	i = 0;
+	if (!save)
+		return (0);
+	while (save[i])
+	{
+		if (save[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 char	*get_next_line(int fd)
 {
-	char	*buffer;
-	char	*line;
-	static char	*rest;
+	char		buf[BUFFER_SIZE + 1];
+	int			read_n;
+	char		*line;
+	char		*save;
 
-
+	read_n = 1;
+	if (fd < 0 || BUFFER_SIZE < 1)
+		return (NULL);
+	while (read_n != 0 && !ft_newline(save))
+	{
+		read_n = read(fd, buf, BUFFER_SIZE);
+		if (read_n == -1)
+			return (NULL);
+		buf[read_n] = '\0';
+		save = ft_strjoin(save, buf);
+	}
+	line = line1(save);
+	save = new_buf(save);
+	if (read_n == 0)
+		return (0);
+	return (line);
 }

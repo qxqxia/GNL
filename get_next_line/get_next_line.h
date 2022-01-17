@@ -6,16 +6,12 @@
 /*   By: qxia <marvin@42.fr>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/27 15:54:16 by qxia              #+#    #+#             */
-/*   Updated: 2021/12/29 18:14:51 by qxia             ###   ########.fr       */
+/*   Updated: 2022/01/17 10:38:40 by qxia             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 1024
-# endif
 
 # include <unistd.h>
 # include <stdlib.h>
@@ -23,6 +19,7 @@
 
 size_t	ft_strlen(const char *s);
 
+char	*ft_strdup(const char *s1);
 
 char	*ft_strjoin(char const *s1, char const *s2);
 
