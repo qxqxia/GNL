@@ -6,7 +6,7 @@
 /*   By: qxia <qxia@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/27 15:53:58 by qxia              #+#    #+#             */
-/*   Updated: 2022/01/17 12:16:00 by qxia             ###   ########.fr       */
+/*   Updated: 2022/01/18 11:48:50 by qxia             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ size_t	ft_strlen(const char *s)
 
 	i = 0;
 	if (!s)
-	return (0);
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
 }	
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*s;
 	size_t	len;
@@ -34,8 +34,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	i = ft_strlen(s1);
 	j = ft_strlen(s2);
 	len = i + j + 1;
-	if (!s1 && !s2)
-		return (NULL);
 	s = malloc(sizeof(char) * (i + j + 1));
 	if (!s)
 		return (NULL);
@@ -51,4 +49,4 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	s[i] = '\0';
 	free ((char *)s1);
 	return (s);
-}	
+}
